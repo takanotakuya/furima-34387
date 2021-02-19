@@ -5,7 +5,7 @@
 | Column             | Type   | Options                   |
 | ------------------ | ------ | ------------------------- |
 | email              | string | null: false, unique: true |
-| encrypted_password | string | null: false, unique: true |
+| encrypted_password | string | null: false,              |
 | nickname           | string | null: false               |
 | first_name         | string | mull: false               |
 | second_name        | string | null: false               |
@@ -48,7 +48,7 @@
 
 - belongs_to :user
 - belongs_to :item
-- has_one    :order
+- has_one    :buyer
 
 ##  buyers テーブル
 
@@ -60,7 +60,7 @@
 | address       | string     | null: false                    |
 | building_name | string     |                                |
 | phone_number  | string     | null: false                    |
-| orders        | references | null: false, foreign_key: true |
+| order         | references | null: false, foreign_key: true |
 
 
 ### Association
