@@ -28,7 +28,7 @@ require 'rails_helper'
           expect(another_user.errors.full_messages).to include("Email has already been taken")
         end
         it "メールアドレスは、@を含む必要があること" do
-          @user.email = '@'
+          @user.email = 'abc'
           @user.valid?
           expect(@user.errors.full_messages).to include("Email is invalid")
         end
@@ -43,9 +43,24 @@ require 'rails_helper'
           expect(@user.errors.full_messages).to include("Password is too short (minimum is 6 characters)")
         end
         it "パスワードは、半角英数字混合での入力でないと登録できない" do
-          @user.password ='123abc'
+          @user.password ='１２３ABC'
           @user.valid?
-          expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
+          expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password", "Password には英字（半角）と数字（半角）の両方を含めて設定してください")
+        end
+        it "パスワードは、英語のみでは登録できない" do
+          @user.password ='abcdef'
+          @user.valid?
+          expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password", "Password には英字（半角）と数字（半角）の両方を含めて設定してください")
+        end
+        it "パスワードは、数字のみでは登録できない" do
+          @user.password ='123456'
+          @user.valid?
+          expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password", "Password には英字（半角）と数字（半角）の両方を含めて設定してください")
+        end
+        it "パスワードは、全角では登録できない" do
+          @user.password ='１２３ABC'
+          @user.valid?
+          expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password", "Password には英字（半角）と数字（半角）の両方を含めて設定してください")
         end
         it "パスワードとパスワード（確認用）は、値の一致しないと登録できない" do
           @user.password = '123456'
