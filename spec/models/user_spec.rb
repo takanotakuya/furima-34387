@@ -53,29 +53,45 @@ require 'rails_helper'
           @user.valid?
           expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
         end
-        it "ユーザー本名は、名字と名前がそれぞれ空では登録できない" do
+        it "ユーザー本名は、名字が空では登録できない" do
           @user.first_name = ''
+          @user.valid?
+          expect(@user.errors.full_messages).to include("First name には全角漢字・ひらがな・カタカナで入力してください") 
+        end
+        it "ユーザー本名は、名前が空では登録できない" do
           @user.second_name = ''
           @user.valid?
-          expect(@user.errors.full_messages).to include("First name には全角漢字・ひらがな・カタカナで入力してください", "Second name には全角漢字・ひらがな・カタカナで入力してください") 
+          expect(@user.errors.full_messages).to include("Second name には全角漢字・ひらがな・カタカナで入力してください") 
         end
-        it "ユーザー本名は、全角（漢字・ひらがな・カタカナ）での入力でないと登録できない" do
+        it "ユーザー本名（名字）は、全角（漢字・ひらがな・カタカナ）での入力でないと登録できない" do
           @user.first_name = 'a1.'
+          @user.valid?
+          expect(@user.errors.full_messages).to include("First name には全角漢字・ひらがな・カタカナで入力してください") 
+        end
+        it "ユーザー本名（名前）は、全角（漢字・ひらがな・カタカナ）での入力でないと登録できない" do
           @user.second_name = 'a1.'
           @user.valid?
-          expect(@user.errors.full_messages).to include("First name には全角漢字・ひらがな・カタカナで入力してください", "Second name には全角漢字・ひらがな・カタカナで入力してください") 
+          expect(@user.errors.full_messages).to include("Second name には全角漢字・ひらがな・カタカナで入力してください") 
         end
-        it "ユーザー本名のフリガナは、名字と名前がそれぞれ空では登録できない" do
+        it "ユーザー本名のフリガナは、名字が空では登録できない" do
           @user.first_name_kana = ''
+          @user.valid?
+          expect(@user.errors.full_messages).to include("First name kana には全角カナで入力してください")
+        end
+        it "ユーザー本名のフリガナは、名前が空では登録できない" do
           @user.second_name_kana = ''
           @user.valid?
-          expect(@user.errors.full_messages).to include("First name kana には全角カナで入力してください", "Second name kana には全角カナで入力してください")
+          expect(@user.errors.full_messages).to include("Second name kana には全角カナで入力してください")
         end
-        it "ユーザー本名のフリガナは、全角（カタカナ）での入力でないと登録できない" do
+        it "ユーザー本名のフリガナ（名字）は、全角（カタカナ）での入力でないと登録できない" do
           @user.first_name_kana = '漢字a1.'
+          @user.valid?
+          expect(@user.errors.full_messages).to include("First name kana には全角カナで入力してください")
+        end
+        it "ユーザー本名のフリガナ（名前）は、全角（カタカナ）での入力でないと登録できない" do
           @user.second_name_kana = '漢字a1.'
           @user.valid?
-          expect(@user.errors.full_messages).to include("First name kana には全角カナで入力してください", "Second name kana には全角カナで入力してください")
+          expect(@user.errors.full_messages).to include("Second name kana には全角カナで入力してください")
         end
         it "生年月日が空では登録できない" do
           @user.birthday = ""
