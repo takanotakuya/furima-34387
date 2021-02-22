@@ -6,13 +6,19 @@ class Item < ApplicationRecord
   with_options presence: true do
   validates :name
   validates :description
-  validates :category_id, numericality: { other_than: 1 }
-  validates :status_id, numericality: { other_than: 1 }
-  validates :charge_burden_id, numericality: { other_than: 1 }
-  validates :prefecture_id, numericality: { other_than: 1 }
-  validates :price
-  validates :day_id, numericality: { other_than: 1 }
+  validates :price, inclusion: { in: 300..9_999_999 }, format: { with: /\A[0-9]+\z/ }
+  validates :image
   end
+
+  with_options numericality: { other_than: 1 } do
+  validates :category_id
+  validates :status_id
+  validates :charge_burden_id
+  validates :prefecture_id
+  validates :day_id
+  end
+  validates :price, numericality: true
+
 
   extend ActiveHash::Associations::ActiveRecordExtensions
   belongs_to :category
