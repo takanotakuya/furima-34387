@@ -9,6 +9,7 @@ class OrdersController < ApplicationController
     @item = Item.find(params[:item_id])
     @order_buyer = OrderBuyer.new(order_params)
     if @order_buyer.valid?
+      pay_item
       @order_buyer.save
       redirect_to root_path
     else
@@ -19,10 +20,15 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order_buyer).permit(:postal_code, :prefecture_id, :municipality, :address, :building_name, :phone_number).merge(user_id: current_user.id, item_id: params[:item_id])
+    params.require(:order_buyer).permit(:postal_code, :prefecture_id, :municipality, :address, :building_name, :phone_number).merge(user_id: current_user.id, item_id: params[:item_id], token: params[:token])
+  end
+
+  def pay_item
+    Payjp.api_key = "sk_test_8820e6c3c2c9a77a9a53e461"
+    Payjp::Charge.create(
+      amount: @item.price,
+      card: order_params[:token],
+      currency: 'jpy'
+    )
   end
 end
-
-# index -> index.html.erb(@item)
-# create redirect_to root_path -> items/index -> items/index.html.erb(@items)
-# create render :index -> index.html.erb(@item, @order_buyer)
