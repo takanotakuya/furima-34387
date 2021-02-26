@@ -38,6 +38,6 @@ class OrdersController < ApplicationController
   end
 
   def redirect
-    redirect_to root_path if @order_buyer == current_user || @item.order.present?
+    redirect_to root_path if @item == current_user || @item.order.present?
   end
 end
