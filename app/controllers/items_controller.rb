@@ -24,7 +24,6 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    redirect_to root_path if @item.user != current_user
     redirect_to root_path if @item.order.present?
   end
 

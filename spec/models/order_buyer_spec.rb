@@ -10,7 +10,10 @@ RSpec.describe OrderBuyer, type: :model do
   
   describe '#create' do
     context '商品購入ができる場合' do
-      it '商品情報、クレジット情報全て入力済みあれば投稿できる（建物名は任意）' do
+      it '商品情報、クレジット情報全て入力済みあれば購入できる（建物名は任意）' do
+        expect(@order_buyer).to be_valid
+      end
+      it '建物名がなくても購入できる' do
         expect(@order_buyer).to be_valid
       end
     end
@@ -61,10 +64,25 @@ RSpec.describe OrderBuyer, type: :model do
         @order_buyer.valid?
         expect(@order_buyer.errors.full_messages).to include("Phone number ハイフンなし、半角数字で入力して下さい")
       end
+      it '電話番号が半角数字以外の文字が入っている場合でも購入できない' do
+        @order_buyer.phone_number = 'あいうえお//..aa'
+        @order_buyer.valid?
+        expect(@order_buyer.errors.full_messages).to include("Phone number ハイフンなし、半角数字で入力して下さい")
+      end
       it "tokenが空では登録できないこと" do
         @order_buyer.token = nil
         @order_buyer.valid?
         expect(@order_buyer.errors.full_messages).to include("Token can't be blank")
+      end
+      it "item_idが空では登録できないこと" do
+        @order_buyer.item_id = nil
+        @order_buyer.valid?
+        expect(@order_buyer.errors.full_messages).to include("Item can't be blank")
+      end
+      it "user_idが空では登録できないこと" do
+        @order_buyer.user_id = nil
+        @order_buyer.valid?
+        expect(@order_buyer.errors.full_messages).to include("User can't be blank")
       end
     end
   end
