@@ -14,6 +14,7 @@ RSpec.describe OrderBuyer, type: :model do
         expect(@order_buyer).to be_valid
       end
       it '建物名がなくても購入できる' do
+        @order_buyer.building_name = ""
         expect(@order_buyer).to be_valid
       end
     end
