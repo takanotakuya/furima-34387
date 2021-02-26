@@ -70,6 +70,11 @@ RSpec.describe OrderBuyer, type: :model do
         @order_buyer.valid?
         expect(@order_buyer.errors.full_messages).to include("Phone number ハイフンなし、半角数字で入力して下さい")
       end
+      it '電話番号が英数混合では購入できない' do
+        @order_buyer.phone_number = 'a1a1a1a1a1a'
+        @order_buyer.valid?
+        expect(@order_buyer.errors.full_messages).to include("Phone number ハイフンなし、半角数字で入力して下さい")
+      end
       it "tokenが空では登録できないこと" do
         @order_buyer.token = nil
         @order_buyer.valid?
