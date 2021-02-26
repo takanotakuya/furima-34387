@@ -23,7 +23,7 @@ RSpec.describe OrderBuyer, type: :model do
       it '郵便番号が空では購入できない' do
         @order_buyer.postal_code = ''
         @order_buyer.valid?
-        expect(@order_buyer.errors.full_messages).to include("Postal code can't be blank", "Postal code is invalid. Include hyphen(-)")
+        expect(@order_buyer.errors.full_messages).to include("Postal code can't be blank")
       end
       it '郵便番号にハイフンを入れないと購入できない' do
         @order_buyer.postal_code = '1234567'
@@ -53,7 +53,7 @@ RSpec.describe OrderBuyer, type: :model do
       it '電話番号が空では購入できない' do
         @order_buyer.phone_number = ''
         @order_buyer.valid?
-        expect(@order_buyer.errors.full_messages).to include("Phone number can't be blank", "Phone number ハイフンなし、半角数字で入力して下さい")
+        expect(@order_buyer.errors.full_messages).to include("Phone number can't be blank")
       end
       it '電話番号にハイフンがあると購入できない' do
         @order_buyer.phone_number = '090-1234-5678'
